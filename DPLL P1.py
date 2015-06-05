@@ -37,6 +37,9 @@ from time import time
 #replace every occurrence of l with "true" and every occurrence of not l with "false" in the formula ?, and
 #simplify the resulting formula.
 
+#En el problema 2, el recorrido despues de simplificar esta mal.
+
+
 ### DPLL BASICO ###
 
 def DPLL(alpha, recorrido):
@@ -70,25 +73,29 @@ def simplificacion(alpha,literal, camino):
     """remueve clausulas en alpha donde el literal es afirmativo (positivo).
     Ademas, remover (no literal) de clausulas donde aparece.
     Finalmente, return new alpha"""
+    flag_final = False
     i = 1
     largo = len(alpha)
     if len(alpha) == 1: largo = largo + 1
     while i in range(0,largo):
+        if flag_final: break
         i -= 1
         clausula = alpha[i]
         print('Alpha a simplificar es', alpha)
         j = 0
         while j in range(0,2):
+            flag = False
             atomo = clausula[j]
             print('En la clausula ', clausula, ' se tiene el atomo', atomo)
             if atomo == -literal:
+                flag = True
                 print('Este atomo es opuesto al literal asignado, asi que lo remuevo.')
                 clausula.remove(atomo)
                 j = 0
                 if len(clausula) == 0: alpha.remove(clausula);break
-                if len(clausula) == 1: j -= 1 #Agregado por error feo.
                 continue
             if atomo == literal:
+                flag = True
                 print('Este atomo es igual al literal asignado, asi que remuevo la clausula')
                 alpha.remove(clausula)
                 j = 1
@@ -97,6 +104,12 @@ def simplificacion(alpha,literal, camino):
                     if abs(atomo) not in camino and atomo not in camino: camino.append(atomo)
                     return '' # No confundir, este no va indentado en el if del camino!!
                 break
+            elif not flag:
+                if j == 1:
+                    i += 2
+                    if i == len(alpha)+1:
+                        flag_final = True
+                if j == 0 and len(clausula) == 1: break
             j += 1
     return alpha
 
