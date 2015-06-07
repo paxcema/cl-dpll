@@ -48,19 +48,21 @@ def DPLL(alpha, recorrido):
 
     if alpha == '':
         print('La expresion es nula, y por lo tanto True. Los literales restantes (si es que sobran) pueden tomar cualquier valor de verdad.')
-        print('Entonces, para que toda la expresion True, los siguientes atomos deben ser verdaderos:', recorrido)
+        print('Entonces, para que toda la expresion sea True, los siguientes atomos deben ser verdaderos:', recorrido)
         return True
 
     elif alpha == []:
         print('La clausula es vacia, por lo tanto la expresion es False con el recorrido:', recorrido)
         return False
 
-    elif (len(alpha[0]) == 1):
+    elif (len(alpha[0]) == 1) and (len(alpha) == 1):
         print('La expresion es una clausula unitaria. Hacemos que su literal sea verdadero.')
         literal_1 = alpha[0][0]
         return DPLL(simplificacion(alpha, literal_1, recorrido), recorrido)
+
     i = 0; j = 0
     literal_2 =  alpha[i][j]
+
     while abs(literal_2) in recorrido:
         try: 
             literal_2 = alpha[i][j+1]
@@ -69,28 +71,31 @@ def DPLL(alpha, recorrido):
                 j = 0
                 literal_2 = alpha[i+1][j]
             except: break
+
     recorrido.append(literal_2)
     print('Asignamos valor de verdad a', literal_2, 'y se modifica el recorrido, que ahora es:', recorrido)
-    if DPLL(simplificacion(alpha, literal_2, recorrido), recorrido) == True:
+    if DPLL(simplificacion(alpha, literal_2, recorrido), recorrido):
         return True
-    else: 
+
+    else:
         print('No resulto la asignacion, probamos con el valor de verdad contrario para el mismo literal.')
-        recorrido.pop()
-        if literal_2 in recorrido: recorrido.remove(literal_2)
+        #recorrido.pop()
+        if literal_2 in recorrido:
+            indice = recorrido.index(literal_2)
+            recorrido = recorrido[:indice]
         recorrido.append(-literal_2)
         return DPLL(simplificacion(alpha, -literal_2, recorrido),recorrido)
 
 def simplificacion(beta,literal, camino):
-    """remueve clausulas en alpha donde el literal es afirmativo (positivo).
-    Ademas, remover (no literal) de clausulas donde aparece.
-    Finalmente, return new alpha"""
+
     alpha = copy.deepcopy(beta)
-    #print('Alpha a simplificar es', alpha)
     flag_final = False
     i = 1
     largo = len(alpha)
     if len(alpha) == 1: largo = largo + 1
+
     while i in range(0,largo):
+
         if flag_final: break
         i -= 1
         try: clausula = alpha[i]
@@ -98,17 +103,19 @@ def simplificacion(beta,literal, camino):
         # print('Alpha a simplificar es', alpha)
         j = 0
         while j in range(0,2):
+
             if not clausula in alpha: break
             flag = False
             atomo = clausula[j]
-            # print('En la clausula ', clausula, ' se tiene el atomo', atomo)
+
             if atomo == -literal:
                 flag = True
                 # print('Este atomo es opuesto al literal asignado, asi que lo remuevo.')
                 clausula.remove(atomo)
                 j = 0
-                if len(clausula) == 0: alpha.remove(clausula);break
+                if len(clausula) == 0: break #alpha.remove(clausula); break
                 continue
+
             elif atomo == literal:
                 flag = True
                 # print('Este atomo es igual al literal asignado, asi que remuevo la clausula')
@@ -119,6 +126,7 @@ def simplificacion(beta,literal, camino):
                     if abs(atomo) not in camino and atomo not in camino: camino.append(atomo)
                     return '' # No confundir, este no va indentado en el if del camino!!
                 break
+
             elif not flag:
                 if j == 1:
                     i += 2
@@ -126,10 +134,13 @@ def simplificacion(beta,literal, camino):
                         flag_final = True
                 if j == 0 and len(clausula) == 1: break
             j += 1
+
+    if alpha == [[]]: return []
     print('La expresion simplificada es', alpha)
     return alpha
 
 def LeerArchivo(ruta):
+
     lista_clausulas = []
     archivo = open(ruta, 'r')
     linea   = archivo.readline()
@@ -144,9 +155,11 @@ def LeerArchivo(ruta):
         lista_clausulas.append(lista)
         linea  = archivo.readline()
     archivo.close()
+
     return lista_clausulas
 
 while True:
+
     opcion = str(input("Seleccione el archivo a probar (o presione 'q' para finalizar): \n"))
     path   = str(os.getcwd())
 
@@ -168,5 +181,5 @@ while True:
     print('\nExpresion a evaluar desde el archivo dado es:', lista_clausulas)
     evaluacion = DPLL(lista_clausulas, casos_recorridos)
     t_final = time() - timer0
-    print(evaluacion)
+    print('\n\nFinalmente, el DPLL retorna:', evaluacion)
     print("Tiempo", (t_final*1000)//1, 'ms')
