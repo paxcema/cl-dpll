@@ -72,9 +72,6 @@ def simplificacion_unitaria(beta,literal, camino):
                     if clausula[0] in clausula2: alpha.delete(clausula2)
                     if -clausula[0] in clausula2: clausula2.remove(-clausula[0])
 
-
-
-
 def simplificacion_pura(beta,literal, camino):
     pass
 
