@@ -13,7 +13,7 @@ from time import time
 #Pure literal elimination
 #If a propositional variable occurs with only one polarity in the formula, it is called
 #pure. Pure literals can always be assigned in a way that makes all clauses containing
-#them true. Thus, these clauses do not constrain the search anymore and can be deleted.
+#them true. Thus, these clauses do not constrain the search anymore and can be deleted.og
 
 ### DPLL MEJORADO ###
 
