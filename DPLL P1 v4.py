@@ -11,7 +11,7 @@ from time import time
 
 def DPLL(alpha, recorrido):
 
-    global eleccion
+    global eleccion, show
     if alpha == '':
         recorrido.sort()
         if show: print('La expresion es nula, y por lo tanto True. Los literales restantes (si es que sobran) pueden tomar cualquier valor de verdad.')
@@ -163,65 +163,107 @@ def LeerArchivo(ruta):
 
     return lista_clausulas
 
-def exec(lista):
+def exec(lista,visible):
 
     global eleccion
     casos_recorridos = []
     timer0 = time()
-    print('\nExpresion a evaluar desde el archivo dado es:', lista_clausulas)
-    evaluacion = DPLL(lista_clausulas, casos_recorridos)
+    if visible: print('\nExpresion a evaluar desde el archivo dado es:', lista)
+    evaluacion = DPLL(lista, casos_recorridos)
     t_final = time() - timer0
-    print('\n\nFinalmente, el DPLL retorna:', evaluacion)
-    if evaluacion: print("El camino a tomar sera:", eleccion)
-    print("Tiempo:", (t_final*1000)//1, 'ms')
+    if visible:                print('\n\nFinalmente, el DPLL retorna:', evaluacion)
+    if evaluacion and visible: print("El camino a tomar sera:", eleccion)
+    if visible:                print("Tiempo:", (t_final*1000)//1, 'ms')
+    if not visible: return [(t_final*1000)//1, evaluacion]
     return
 
 while True:
 
     print("\nBienvenido al triple-SAT solver!")
-    imprimir = input("\nIngrese 1 si desea obtener una descripcion del proceso de evaluacion, o un 0 si prefiere omitirlo. Esto ultimo es recomendable en caso de evaluar instancias muy complejas!\n")
-    opcion1 = str(input("\nIngrese 1 para un generador automatico de instancias, o 2 para evaluar \nalguna en particular dentro de la carpeta contenedora del programa:\n"))
-    if imprimir == '1': show = True
-    if imprimir == '0': show = False
-
-    if opcion1 == "1":
-
+    imprimir = input("\nIngrese 2 para probar variacion de parametros, 1 si desea obtener una descripcion del proceso de evaluacion, o un 0 si prefiere omitirlo. Esto ultimo es recomendable en caso de evaluar instancias muy complejas!\n")
+    if imprimir == '2':
+        show = False
         while True:
-            counter = 0; eleccion = []
-            print('\n(Para volver al menu principal, presione q.)')
-            n_clausulas = input("Ingrese el numero de clausulas de la instancia a generar\n")
-            if n_clausulas == 'q' or n_clausulas == 'Q': break
-            n_literales = input("Ingrese el numero de literales de la instancia a generar\n")
-            if n_literales == 'q' or n_literales == 'Q': break
-            pureza = input("Ingrese 1 para una instancia sin clausulas que tengan literales repetidos. Ingrese 0 para omitir esta restriccion:\n")
-            if pureza == 'q' or pureza == 'Q': break
-            if pureza == '1': puro = True
-            if pureza == '0': puro = False
-            instancia = []
+            choice = input("\n(Se asume que no existen literales repetidos dentro de cada clausula).\n1 para variar numero de clausulas, 2 para variar numero de literales:\n")
+            if choice == '1':
+                fijo = int(input("Numero fijo de literales:\n"))
+                index1 = int(input("Cantidad inicial de clausulas:\n"))
+                index2 = int(input("Cantidad final de clausulas:\n"))
 
-            lista_clausulas = instanciacion(instancia, int(n_clausulas), int(n_literales), puro)
-            exec(lista_clausulas)
-            print("Numero de operaciones:", counter)
+            else:
+                fijo = int(input("Numero fijo de clausulas:\n"))
+                index1 = int(input("Cantidad inicial de literales:\n"))
+                index2 = int(input("Cantidad final de literales:\n"))
 
-    if opcion1 == "2":
+            repeticiones = int(input("Repeticiones por cada estado:\n"))
+            lista_final = []
+            for i in range(index1,index2+1):
+                lista_resultados = []
+                for j in range(0,repeticiones):
+                    counter = 0; eleccion = []; instancia = []
+                    if choice == '1': lista_clausulas = instanciacion(instancia, i, fijo, True)
+                    if choice == '2': lista_clausulas = instanciacion(instancia, fijo, i, True)
+                    tiempo, valor = exec(lista_clausulas, False)
+                    tupla = (tiempo, valor, counter, eleccion)
+                    lista_resultados.append([tupla, lista_clausulas])
+                suma_t = 0; suma_operaciones = 0; suma_v = 0
+                for resultado in lista_resultados:
+                    suma_t += resultado[0][0]
+                    if resultado[0][1]: suma_v += 1
+                    suma_operaciones += resultado[0][2]
+                t_promedio = suma_t//repeticiones
+                op_promedio = suma_operaciones//repeticiones
+                tupla2 = (t_promedio, op_promedio, suma_v, i, fijo)
+                lista_final.append(tupla2)
 
-        while True:
-            counter = 0; eleccion = []
-            print("\n(Para volver al menu principal, ingrese 'q' en cualquier momento.)")
-            opcion2 = str(input("Seleccione el archivo a probar: \n"))
-            if opcion2 == 'q' or opcion2 == 'Q': break
-            path = str(os.getcwd())
+            print(lista_final)
+            for resultado in lista_final:
+                print("Para", resultado[3], "clausulas de", resultado[4], "literales, se ejecuto el programa", repeticiones, "veces, con", resultado[2], "instancias satisfacibles, obteniendo:")
+                print("Tiempo de ejecucion promedio:", resultado[0], ", y numero de operaciones promedio:", resultado[1], ".\n ")
 
-            try:
-                r = '%s/instancia%s.txt' % (path,opcion2)
-                lista_clausulas = LeerArchivo(r)
-                exec(lista_clausulas)
+    else:
+        opcion1 = str(input("\nIngrese 1 para un generador automatico de instancias, o 2 para evaluar \nalguna en particular dentro de la carpeta contenedora del programa:\n"))
+        if imprimir == '1': show = True
+        if imprimir == '0': show = False
+
+        if opcion1 == "1":
+
+            while True:
+                counter = 0; eleccion = []
+                print('\n(Para volver al menu principal, presione q.)')
+                n_clausulas = input("Ingrese el numero de clausulas de la instancia a generar\n")
+                if n_clausulas == 'q' or n_clausulas == 'Q': break
+                n_literales = input("Ingrese el numero de literales de la instancia a generar\n")
+                if n_literales == 'q' or n_literales == 'Q': break
+                pureza = input("Ingrese 1 para una instancia sin clausulas que tengan literales repetidos. Ingrese 0 para omitir esta restriccion:\n")
+                if pureza == 'q' or pureza == 'Q': break
+                if pureza == '1': puro = True
+                if pureza == '0': puro = False
+                instancia = []
+
+                lista_clausulas = instanciacion(instancia, int(n_clausulas), int(n_literales), puro)
+                exec(lista_clausulas, True)
                 print("Numero de operaciones:", counter)
 
-            except:
-                print("Archivo instancia%s.txt no encontrado. Intente de nuevo!" % opcion2)
-                continue
+        if opcion1 == "2":
 
-    if opcion1 == 'q' or opcion1 == 'Q':
-        print("Gracias por usar nuestro triple-SAT solver!")
-        break
+            while True:
+                counter = 0; eleccion = []
+                print("\n(Para volver al menu principal, ingrese 'q' en cualquier momento.)")
+                opcion2 = str(input("Seleccione el archivo a probar: \n"))
+                if opcion2 == 'q' or opcion2 == 'Q': break
+                path = str(os.getcwd())
+
+                try:
+                    r = '%s/instancia%s.txt' % (path,opcion2)
+                    lista_clausulas = LeerArchivo(r)
+                    exec(lista_clausulas, True)
+                    print("Numero de operaciones:", counter)
+
+                except:
+                    print("Archivo instancia%s.txt no encontrado. Intente de nuevo!" % opcion2)
+                    continue
+
+        if opcion1 == 'q' or opcion1 == 'Q':
+            print("Gracias por usar nuestro triple-SAT solver!")
+            break
