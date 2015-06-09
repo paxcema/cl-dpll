@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="24636814-2dc5-417d-8b37-3b8c128767bd" name="Default" comment="Modulo de prueba progresiva añadido.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DPLL P1 v4.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DPLL P1 v3d.py" afterPath="$PROJECT_DIR$/DPLL P1 v3d.py" />
+    <list default="true" id="24636814-2dc5-417d-8b37-3b8c128767bd" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DPLL P1 v4.py" afterPath="$PROJECT_DIR$/DPLL P1 v4.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IMT1001.iws" />
@@ -46,8 +45,8 @@
       <file leaf-file-name="DPLL P1 v4.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DPLL P1 v4.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4065">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="2.4626865" vertical-offset="2895" max-vertical-offset="4065">
+              <caret line="218" column="0" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -81,6 +80,7 @@
         <option value="$PROJECT_DIR$/instanciaS1.txt" />
         <option value="$PROJECT_DIR$/DPLL P1 v3d.py" />
         <option value="$PROJECT_DIR$/DPLL P1 v3e.py" />
+        <option value="$PROJECT_DIR$/DPLL P1 v4.py" />
       </list>
     </option>
   </component>
@@ -178,7 +178,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.DPLL P1 v3e">
+  <component name="RunManager" selected="Python.DPLL P1 v4">
     <configuration default="false" name="DPLL P1 v3b" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -193,28 +193,6 @@
       <module name="IMT1001" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DPLL P1 v3b.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="DPLL P2" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="IMT1001" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DPLL P2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
@@ -279,6 +257,26 @@
       <module name="IMT1001" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DPLL P1 v3e.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="DPLL P1 v4" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="IMT1001" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DPLL P1 v4.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PythonRunner" />
@@ -415,18 +413,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.DPLL P1 v3b" />
-      <item index="1" class="java.lang.String" itemvalue="Python.DPLL P2" />
-      <item index="2" class="java.lang.String" itemvalue="Python.DPLL P1 v3c" />
-      <item index="3" class="java.lang.String" itemvalue="Python.DPLL P1 v3d" />
-      <item index="4" class="java.lang.String" itemvalue="Python.DPLL P1 v3e" />
+      <item index="1" class="java.lang.String" itemvalue="Python.DPLL P1 v3c" />
+      <item index="2" class="java.lang.String" itemvalue="Python.DPLL P1 v3d" />
+      <item index="3" class="java.lang.String" itemvalue="Python.DPLL P1 v3e" />
+      <item index="4" class="java.lang.String" itemvalue="Python.DPLL P1 v4" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.DPLL P1 v3e" />
-        <item index="1" class="java.lang.String" itemvalue="Python.DPLL P1 v3d" />
-        <item index="2" class="java.lang.String" itemvalue="Python.DPLL P1 v3c" />
-        <item index="3" class="java.lang.String" itemvalue="Python.DPLL P1 v3b" />
-        <item index="4" class="java.lang.String" itemvalue="Python.DPLL P2" />
+        <item index="0" class="java.lang.String" itemvalue="Python.DPLL P1 v4" />
+        <item index="1" class="java.lang.String" itemvalue="Python.DPLL P1 v3e" />
+        <item index="2" class="java.lang.String" itemvalue="Python.DPLL P1 v3d" />
+        <item index="3" class="java.lang.String" itemvalue="Python.DPLL P1 v3c" />
+        <item index="4" class="java.lang.String" itemvalue="Python.DPLL P1 v3b" />
       </list>
     </recent_temporary>
   </component>
@@ -489,12 +487,18 @@
       <option name="project" value="LOCAL" />
       <updated>1433802194104</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Modulo de prueba progresiva añadido en P1 v4.">
+      <created>1433884552983</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1433884552983</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="768" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -508,7 +512,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18887262" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.67545074" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.77531207" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -541,7 +545,8 @@
     <MESSAGE value="Ahora sí, recorre todo el árbol de posibilidades! La version v3b, por lo menos. Hay que probar instancias." />
     <MESSAGE value="Progreso inicial para la pregunta 2." />
     <MESSAGE value="P1 100% funcional. Generador de Instancias creado, y nueva función de simplificación.&#10;&#10;Sólo queda automatizar las evaluaciones." />
-    <option name="LAST_COMMIT_MESSAGE" value="P1 100% funcional. Generador de Instancias creado, y nueva función de simplificación.&#10;&#10;Sólo queda automatizar las evaluaciones." />
+    <MESSAGE value="Modulo de prueba progresiva añadido en P1 v4." />
+    <option name="LAST_COMMIT_MESSAGE" value="Modulo de prueba progresiva añadido en P1 v4." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -767,8 +772,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DPLL P1 v4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4065">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="2.4626865" vertical-offset="2895" max-vertical-offset="4065">
+          <caret line="218" column="0" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
           <folding />
         </state>
       </provider>

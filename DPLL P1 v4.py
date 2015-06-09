@@ -190,7 +190,7 @@ while True:
                 index1 = int(input("Cantidad inicial de clausulas:\n"))
                 index2 = int(input("Cantidad final de clausulas:\n"))
 
-            else:
+            if choice == '2':
                 fijo = int(input("Numero fijo de clausulas:\n"))
                 index1 = int(input("Cantidad inicial de literales:\n"))
                 index2 = int(input("Cantidad final de literales:\n"))
@@ -213,10 +213,10 @@ while True:
                     suma_operaciones += resultado[0][2]
                 t_promedio = suma_t//repeticiones
                 op_promedio = suma_operaciones//repeticiones
-                tupla2 = (t_promedio, op_promedio, suma_v, i, fijo)
+                if choice == '1': tupla2 = (t_promedio, op_promedio, suma_v, i, fijo)
+                if choice == '2': tupla2 = (t_promedio, op_promedio, suma_v, fijo, i)
                 lista_final.append(tupla2)
 
-            print(lista_final)
             for resultado in lista_final:
                 print("Para", resultado[3], "clausulas de", resultado[4], "literales, se ejecuto el programa", repeticiones, "veces, con", resultado[2], "instancias satisfacibles, obteniendo:")
                 print("Tiempo de ejecucion promedio:", resultado[0], ", y numero de operaciones promedio:", resultado[1], ".\n ")
