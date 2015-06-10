@@ -196,30 +196,43 @@ while True:
                 index2 = int(input("Cantidad final de literales:\n"))
 
             repeticiones = int(input("Repeticiones por cada estado:\n"))
+            salto = int(input("Salto de la variable por cada iteracion:\n"))
             lista_final = []
-            for i in range(index1,index2+1):
-                lista_resultados = []
+            for i in range(index1,index2+1,salto):
+                lista_resultadosTrue = []
+                lista_resultadosFalse = []
                 for j in range(0,repeticiones):
                     counter = 0; eleccion = []; instancia = []
                     if choice == '1': lista_clausulas = instanciacion(instancia, i, fijo, True)
                     if choice == '2': lista_clausulas = instanciacion(instancia, fijo, i, True)
                     tiempo, valor = exec(lista_clausulas, False)
                     tupla = (tiempo, valor, counter, eleccion)
-                    lista_resultados.append([tupla, lista_clausulas])
-                suma_t = 0; suma_operaciones = 0; suma_v = 0
-                for resultado in lista_resultados:
-                    suma_t += resultado[0][0]
-                    if resultado[0][1]: suma_v += 1
-                    suma_operaciones += resultado[0][2]
-                t_promedio = suma_t//repeticiones
-                op_promedio = suma_operaciones//repeticiones
-                if choice == '1': tupla2 = (t_promedio, op_promedio, suma_v, i, fijo)
-                if choice == '2': tupla2 = (t_promedio, op_promedio, suma_v, fijo, i)
-                lista_final.append(tupla2)
-
+                    if tupla[1]: lista_resultadosTrue.append([tupla, lista_clausulas])
+                    else: lista_resultadosFalse.append([tupla, lista_clausulas])
+                suma_t = 0; suma_operaciones = 0; suma_v = 0; aux1 = []; aux2 = []
+                for lista in [lista_resultadosTrue, lista_resultadosFalse]:
+                    for resultado in lista:
+                        suma_t += resultado[0][0]
+                        if resultado[0][1]: suma_v += 1
+                        suma_operaciones += resultado[0][2]
+                    t_promedio = suma_t//repeticiones
+                    op_promedio = suma_operaciones//repeticiones
+                    if choice == '1': tupla2 = (t_promedio, op_promedio, suma_v, i, fijo)
+                    else:             tupla2 = (t_promedio, op_promedio, suma_v, fijo, i)
+                    if lista == lista_resultadosTrue: aux1.append(tupla2)
+                    else: aux2.append(tupla2)
+                for i in range(0,len(aux1)):
+                    tupla = [aux1[i], aux2[i]]
+                    lista_final.append(tupla)
+            print()
             for resultado in lista_final:
-                print("Para", resultado[3], "clausulas de", resultado[4], "literales, se ejecuto el programa", repeticiones, "veces, con", resultado[2], "instancias satisfacibles, obteniendo:")
-                print("Tiempo de ejecucion promedio:", resultado[0], ", y numero de operaciones promedio:", resultado[1], ".\n ")
+                print("####\nPara", resultado[0][3], "clausulas de", resultado[0][4], "literales, se ejecuto el programa", repeticiones, "veces, con", resultado[0][2], "instancias satisfacibles, obteniendo:")
+                if resultado[0][2] > 0:
+                    print("Para las instancias satisfacibles:")
+                    print("Tiempo de ejecucion promedio:", resultado[0][0], "ms , y numero de operaciones promedio:", resultado[0][1], "\n####\n ")
+                if repeticiones - resultado[0][2] > 0:
+                    print("Para las instancias no satisfacibles:")
+                    print("Tiempo de ejecucion promedio:", resultado[1][0], "ms , y numero de operaciones promedio:", resultado[1][1], "\n####\n ")
 
     else:
         opcion1 = str(input("\nIngrese 1 para un generador automatico de instancias, o 2 para evaluar \nalguna en particular dentro de la carpeta contenedora del programa:\n"))
