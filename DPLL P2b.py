@@ -11,8 +11,10 @@ from time import time
 
 ### DPLL MEJORADO ###
 
-def tautologia(alpha, recorrido):
+def tautologia(alpha):
     # Aplica la ley de la tautologia. Esto es, elimina clausulas que posean dentro de ellas literales complementarios.
+    global eleccion
+
     i = 0
     while i in range(0, len(alpha)):
         clausula = alpha[i]
@@ -20,7 +22,7 @@ def tautologia(alpha, recorrido):
         for atomo in clausula:
             if -atomo in lista:
                 alpha.remove(clausula)
-                if abs(atomo) not in recorrido: recorrido.append(abs(atomo))
+                if abs(atomo) not in eleccion: eleccion.append(abs(atomo))
                 i -= 1
                 break
             if atomo not in lista: lista.append(atomo)
@@ -29,6 +31,7 @@ def tautologia(alpha, recorrido):
 
 def unit(alpha):
     # Contador de clausulas unitarias en alpha.
+    if alpha == '' or alpha == []: return 0
     c = 0
     for clausula in alpha:
         if len(clausula) == 1: c += 1
@@ -37,73 +40,26 @@ def unit(alpha):
 def puros(alpha):
     # Contador de literales puros en alpha. Se le dice puro al literal que aparece solo con un signo a lo largo de tod alpha.
     lista_puros = []; lista_impuros = []
+    if alpha == '' or alpha == []: return []
     for clausula in alpha:
         for atomo in clausula:
             if abs(atomo) in lista_impuros: continue
             if -atomo in lista_puros:
                 lista_puros.remove(-atomo)
-                lista_impuros.append(-atomo)
+                lista_impuros.append(abs(atomo))
                 continue
             if atomo not in lista_puros: lista_puros.append(atomo)
     return lista_puros
 
-def DPLL2(alpha,recorrido):
+def DPLL(alpha,recorrido):
     # Esta funcion se aplica al inicio. Consiste de simplificaciones logicas de 2 tipos.
     # La regla de la tautologia se aplica con anterioridad a este metodo.
 
-    # Casos base
-    if alpha == '':
-        recorrido.sort()
-        if show: print('La expresion es nula, y por lo tanto True. Los literales restantes (si es que sobran) pueden tomar cualquier valor de verdad.')
-        if show: print('Entonces, para que toda la expresion sea True, los siguientes atomos deben ser verdaderos:', recorrido)
-        eleccion = recorrido
-        return True
+    global eleccion, show, counter
 
-    elif alpha == []:
-        if show: print('La clausula es vacia, por lo tanto la expresion es False con el recorrido:', recorrido)
-        return False
+    print("Alpha en DPLL:", alpha)
+    # Casos Base
 
-    # Regla de la clausula unitaria
-
-    while unit(alpha) >= 1:
-        i = 0
-        while i in range(0, len(alpha)):
-            if len(alpha[i]) == 1:
-                literal = alpha[i][0]; j = 0
-                if literal not in recorrido: recorrido.append(literal)
-                while j in range(0, len(alpha)):
-                    k = 0
-                    while k in range(0,2):
-                        atomo = alpha[j][k]
-                        if atomo == literal:
-                            alpha.remove(alpha[j])
-                        elif atomo == -literal:
-                            alpha[j].remove(atomo)
-                        else:
-                            k += 1
-                    j += 1
-            else: i += 1
-
-    # Regla del literal puro
-
-    while len(puros(alpha)) >= 1:
-        puro = puros(alpha)[0]; i = 0
-        if puro not in recorrido: recorrido.append(puro)
-        while i in range(0, len(alpha)):
-            if puro in alpha[i]:
-                alpha.remove(alpha[i])
-            else: i += 1
-
-    # Aplicamos la regla original de la bifuracacion por asignacion
-
-    if alpha == '' or alpha == [] or alpha == [[]]: return DPLL2(alpha,recorrido)
-    else:                                          return DPLL(alpha,recorrido)
-
-def DPLL(alpha, recorrido):
-
-    global eleccion, show
-
-    # Casos base
     if alpha == '':
         recorrido.sort()
         if show: print('La expresion es nula, y por lo tanto True. Los literales restantes (si es que sobran) pueden tomar cualquier valor de verdad.')
@@ -142,6 +98,60 @@ def DPLL(alpha, recorrido):
             recorrido = recorrido[:indice]
         recorrido.append(-literal_2)
         return DPLL(simplificacionv2(alpha, -literal_2, recorrido),recorrido)
+
+def simplificacion(beta, recorrido):
+
+    global counter
+    alpha = copy.deepcopy(beta)
+
+    # Regla de la clausula unitaria
+
+    while unit(alpha) >= 1:
+        i = 0
+        while i in range(0, len(alpha)):
+            if len(alpha[i]) == 1:
+                literal = alpha[i][0]; j = 0
+                if literal not in recorrido: recorrido.append(literal)
+                while j in range(0, len(alpha)):
+                    k = 0
+                    while k in range(0,3):
+                        atomo = alpha[j][k]
+                        if atomo == literal:
+                            alpha.remove(alpha[j])
+                            counter += 1
+                            if j == len(alpha) + 1: break
+                        elif atomo == -literal:
+                            alpha[j].remove(atomo)
+                            counter += 1
+                        else:
+                            k += 1
+                        if alpha == [] or alpha == [[]]: break
+                    j += 1
+            else: i += 1
+        if show:
+            print("Por regla de la clausula unitaria, la expresion se simplifica:")
+            print(alpha)
+        if alpha == []: return ''
+        if alpha == [[]]: return []
+
+    # Regla del literal puro
+
+    while len(puros(alpha)) >= 1:
+        puro = puros(alpha)[0]; i = 0
+        if puro not in recorrido: recorrido.append(puro)
+        while i in range(0, len(alpha)):
+            if puro in alpha[i]:
+                alpha.remove(alpha[i])
+                counter += 1
+            else: i += 1
+        if show:
+            print("Por regla del literal puro, la expresion queda:")
+            print(alpha)
+        if alpha == []: return ''
+        if alpha == [[]]: return []
+
+    return alpha
+
 
 def simplificacionv2(beta, literal, camino):
 
@@ -251,27 +261,25 @@ def LeerArchivo(ruta):
 
     return lista_clausulas
 
-def exec(lista, visible, bool):
+def exec(lista):
 
-    global eleccion
+    global eleccion, show
+
     casos_recorridos = []
     timer0 = time()
-    if visible: print('\nExpresion a evaluar desde el archivo dado es:', lista)
-    if bool: evaluacion = DPLL(lista, casos_recorridos)
-    else: evaluacion = DPLL2(tautologia(lista, casos_recorridos), casos_recorridos)
+    if show: print('\nExpresion a evaluar desde el archivo dado es:', lista)
+    evaluacion = DPLL(simplificacion(tautologia(lista), casos_recorridos), casos_recorridos)
     t_final = time() - timer0
-    if visible:                print('\n\nFinalmente, el DPLL retorna:', evaluacion)
-    if evaluacion and visible: print("El camino a tomar sera:", eleccion)
-    if visible:                print("Tiempo:", (t_final*1000)//1, 'ms')
-    if not visible: return [(t_final*1000)//1, evaluacion]
+    if show:                print('\n\nEl DPLL retorna:', evaluacion)
+    if evaluacion and show: print("El camino a tomar sera:", eleccion)
+    if show:                print("Tiempo:", (t_final*1000)//1, 'ms')
+    if not show:
+        return [(t_final*1000)//1, evaluacion]
     return
 
 while True:
 
-    print("\nBienvenido al triple-SAT solver!")
-    base = input("\nIngrese 1 para probar el algoritmo base, o 2 para probar el algoritmo mejorado:\n")
-    if base == 1: baseb = True
-    else: baseb = False
+    print("\nBienvenido al triple-SAT solver mejorado!")
     imprimir = input("\nIngrese 2 para probar variacion de parametros, 1 si desea obtener una descripcion del proceso de evaluacion, o un 0 si prefiere omitirlo. Esto ultimo es recomendable en caso de evaluar instancias muy complejas!\n")
     if imprimir == '2':
         show = False
@@ -302,7 +310,7 @@ while True:
                     counter = 0; eleccion = []; instancia = []
                     if choice == '1': lista_clausulas = instanciacion(instancia, i, fijo, True)
                     if choice == '2': lista_clausulas = instanciacion(instancia, fijo, i, True)
-                    tiempo, valor = exec(lista_clausulas, False, baseb)
+                    tiempo, valor = exec(lista_clausulas)
                     tupla = (tiempo, valor, counter, eleccion)
                     if tupla[1]: lista_resultadosTrue.append([tupla, lista_clausulas])
                     else: lista_resultadosFalse.append([tupla, lista_clausulas])
@@ -352,13 +360,14 @@ while True:
                 n_literales = input("Ingrese el numero de literales de la instancia a generar\n")
                 if n_literales == 'q' or n_literales == 'Q': break
                 pureza = input("Ingrese 1 para una instancia sin clausulas que tengan literales repetidos. Ingrese 0 para omitir esta restriccion:\n")
-                if pureza == 'q' or pureza == 'Q': break
                 if pureza == '1': puro = True
                 if pureza == '0': puro = False
+                if pureza == 'q' or pureza == 'Q': break
+
                 instancia = []
 
                 lista_clausulas = instanciacion(instancia, int(n_clausulas), int(n_literales), puro)
-                exec(lista_clausulas, True, baseb)
+                exec(lista_clausulas)
                 print("Numero de operaciones:", counter)
 
         if opcion1 == "2":
@@ -370,15 +379,15 @@ while True:
                 if opcion2 == 'q' or opcion2 == 'Q': break
                 path = str(os.getcwd())
 
-                #try:
-                r = '%s/instancia%s.txt' % (path,opcion2)
-                lista_clausulas = LeerArchivo(r)
-                exec(lista_clausulas, True, baseb)
-                print("Numero de operaciones:", counter)
+                try:
+                    r = '%s/instancia%s.txt' % (path,opcion2)
+                    lista_clausulas = LeerArchivo(r)
+                    exec(lista_clausulas)
+                    print("Numero de operaciones:", counter)
 
-                #except:
-                #    print("Archivo instancia%s.txt no encontrado. Intente de nuevo!" % opcion2)
-                #    continue
+                except:
+                    print("Archivo instancia%s.txt no encontrado. Intente de nuevo!" % opcion2)
+                    continue
 
         if opcion1 == 'q' or opcion1 == 'Q':
             print("Gracias por usar nuestro triple-SAT solver!")
