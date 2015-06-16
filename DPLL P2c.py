@@ -242,12 +242,16 @@ def exec(lista):
     global eleccion, show
     casos_recorridos = []
     timer0 = time()
-    if show: print('\nExpresion a evaluar desde el archivo dado es:', lista)
+    #if show:
+    print('\nExpresion a evaluar desde el archivo dado es:', lista)
     evaluacion = DPLL(tautologia(lista), casos_recorridos)
     t_final = time() - timer0
-    if show:                print('\n\nEl DPLL retorna:', evaluacion)
-    if evaluacion and show: print("El camino a tomar sera:", eleccion)
-    if show:                print("Tiempo:", (t_final*1000)//1, 'ms')
+    #if show:
+    print('\n\nEl DPLL retorna:', evaluacion)
+    if evaluacion:# and show:
+        print("El camino a tomar sera:", eleccion)
+    # if show:
+    print("Tiempo:", (t_final*1000)//1, 'ms')
     if not show:
         return [(t_final*1000)//1, evaluacion]
     return
