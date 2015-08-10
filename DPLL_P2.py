@@ -5,7 +5,7 @@ import copy
 import random
 from time import time
 
-# Para el basebase mostrar el DPLL 1 sin la funcion de simplificacion (y sin el caso base de clausula unitaria, parece).
+# Para el base, mostrar v1 sin funcion de simplificacion (y sin el caso base de clausula unitaria).
 # Eso es fuerza bruta. Luego el DPLL1, luego el DPLL2.
 
 
