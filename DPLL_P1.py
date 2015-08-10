@@ -5,7 +5,7 @@ import copy
 import random
 from time import time
 
-# Correcciones finales mediante testeo intensivo. El algoritmo base ya funciona!
+# Correcciones finales mediante testeo intensivo.
 
 ### DPLL BASICO ###
 
